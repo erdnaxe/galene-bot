@@ -86,15 +86,16 @@ class GaleneBot:
         )
 
     @staticmethod
-    def is_history(time: datetime, time_frame=30):
-        """Check if event is old.
+    def is_history(time: datetime, time_frame=5):
+        """Check if time is in the past.
 
         :param time: time of the event
         :type time: datetime
-        :param time_frame: time frame in seconds, defaults to 30
+        :param time_frame: time frame in seconds, defaults to 5
         :type time_frame: int, optional
+        :return if time is before now (with margin of time frame)
         """
-        return time + timedelta(seconds=30) < datetime.now()
+        return time + timedelta(seconds=time_frame) < datetime.now()
 
     async def _connect(self):
         """Connect to server."""
@@ -152,13 +153,13 @@ class GaleneBot:
             elif message["type"] == "user":
                 # User joined or left
                 user_id = message.get("id")
-                user_name = message.get("username", "(anon)")
+                username = message.get("username", "(anon)")
                 if message["kind"] == "add":
-                    self.users[user_id] = user_name
-                    await self.on_user_add(user_id, user_name)
+                    self.users[user_id] = username
+                    await self.on_user_add(user_id, username)
                 elif message["kind"] == "delete":
                     del self.users[user_id]
-                    await self.on_user_delete(user_id, user_name)
+                    await self.on_user_delete(user_id, username)
                 else:
                     log.warn(f"Not implemented {message}")
             elif message["type"] == "chat":
@@ -175,13 +176,13 @@ class GaleneBot:
                 # Oh no! We receive something not implemented
                 log.warn(f"Not implemented {message}")
 
-    async def on_user_add(self, user_id: str, user_name: str):
+    async def on_user_add(self, user_id: str, username: str):
         """User joined group event.
 
         :param user_id: identifier of the new user
         :type user_id: str
-        :param user_name: username of the new user
-        :type user_name: str
+        :param username: username of the new user
+        :type username: str
         """
         pass
 

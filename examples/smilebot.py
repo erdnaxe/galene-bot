@@ -34,8 +34,8 @@ class SmileBot(GaleneBot):
         # Make user happy
         for sad_smile, happy_smile in self.smiles.items():
             if sad_smile in value:
-                if len(sad_smile) + 1 < len(value) and f" {sad_smile} " not in f" {value} ":
-                    return  # This is not really a sad message
+                if f" {sad_smile} " not in f" {value} ":
+                    continue  # This is not really a sad message
 
                 await self.send_chat(happy_smile)
                 return
