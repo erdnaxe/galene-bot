@@ -16,15 +16,16 @@ from galene_bot import ArgumentParser, GaleneBot
 class SmileBot(GaleneBot):
     """A bot that smiles back to sad users."""
 
-    async def on_chat(self, kind: str, source: str, username: str, value: str, time: int):
+    smiles = {
+        ":(": ":)",
+        "D:": ":D",
+        ":-(": ":-)",
+        "🙁": "🙂",
+    }
+
+    async def on_chat(self, _, __, ___, value: str, time: int):
         """On new chat event.
 
-        :param source: identifier of the sender
-        :type source: str
-        :param kind: kind of message, None if text message
-        :type kind: str
-        :param username: username of the new user
-        :type username: str
         :param value: text message
         :type value: str
         :param time: time of the message
@@ -34,8 +35,14 @@ class SmileBot(GaleneBot):
         if self.is_history(time):
             return
 
-        if ":(" in value:
-            await self.send_chat(":)")
+        # Make user happy
+        for sad_smile, happy_smile in self.smiles.items():
+            if sad_smile in value:
+                if len(sad_smile) + 1 < len(value) and f" {sad_smile} " not in f" {value} ":
+                    return  # This is not really a sad message
+
+                await self.send_chat(happy_smile)
+                return
 
 
 def main():
