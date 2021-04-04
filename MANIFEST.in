@@ -1,0 +1,5 @@
+# Include metadata files
+include CONTRIBUTING.md
+
+# Include examples
+recursive-include examples *.py
