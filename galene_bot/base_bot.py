@@ -9,6 +9,7 @@ import json
 import logging
 import secrets
 import ssl
+from datetime import datetime, timedelta
 
 import websockets
 
@@ -84,6 +85,17 @@ class GaleneBot:
             }
         )
 
+    @staticmethod
+    def is_history(time: datetime, time_frame=30):
+        """Check if event is old.
+
+        :param time: time of the event
+        :type time: datetime
+        :param time_frame: time frame in seconds, defaults to 30
+        :type time_frame: int, optional
+        """
+        return time + timedelta(seconds=30) < datetime.now()
+
     async def _connect(self):
         """Connect to server."""
         # Create WebSocket
@@ -156,6 +168,8 @@ class GaleneBot:
                 username = message.get("username", "(anon)")
                 value = message.get("value", "")
                 time = message.get("time", 0)
+                if time > 0:
+                    time = datetime.fromtimestamp(time / 1000)
                 await self.on_chat(kind, source, username, value, time)
             else:
                 # Oh no! We receive something not implemented

@@ -8,9 +8,9 @@ Smile bot.
 
 import asyncio
 import sys
+from datetime import datetime, timedelta
 
-from galene_bot.base_bot import GaleneBot
-from galene_bot.base_argparse import ArgumentParser
+from galene_bot import ArgumentParser, GaleneBot
 
 
 class SmileBot(GaleneBot):
@@ -30,6 +30,10 @@ class SmileBot(GaleneBot):
         :param time: time of the message
         :type time: int
         """
+        # Get only new messages
+        if self.is_history(time):
+            return
+
         if ":(" in value:
             await self.send_chat(":)")
 
