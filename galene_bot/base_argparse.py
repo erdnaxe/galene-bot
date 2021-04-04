@@ -6,7 +6,9 @@ Implement an argument parser for a bot.
 """
 
 import argparse
+import asyncio
 import logging
+import sys
 
 
 class ArgumentParser(argparse.ArgumentParser):
@@ -62,3 +64,19 @@ class ArgumentParser(argparse.ArgumentParser):
             format="\033[90m%(asctime)s\033[1;0m [%(name)s] %(levelname)s %(message)s\033[1;0m",
         )
         return options
+
+    def run(self, BotClass, *args, **kwargs):
+        """Run bot.
+
+        :param BotClass: Bot class.
+        :type BotClass: GaleneBot
+        """
+        opt = self.parse_args()
+        client = BotClass(
+            opt.server, opt.group, opt.username, opt.password, *args, **kwargs
+        )
+        loop = asyncio.get_event_loop()
+        try:
+            loop.run_until_complete(client.loop())
+        except KeyboardInterrupt:
+            sys.exit(1)

@@ -6,10 +6,6 @@
 Smile bot.
 """
 
-import asyncio
-import sys
-from datetime import datetime, timedelta
-
 from galene_bot import ArgumentParser, GaleneBot
 
 
@@ -47,20 +43,11 @@ class SmileBot(GaleneBot):
 
 def main():
     """Entrypoint."""
-    # Arguments parser
     parser = ArgumentParser(
         prog="smilebot",
         description="A bot that smiles.",
     )
-    opt = parser.parse_args()
-
-    # Run
-    client = SmileBot(opt.server, opt.group, opt.username, opt.password)
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(client.loop())
-    except KeyboardInterrupt:
-        sys.exit(1)
+    parser.run(SmileBot)
 
 
 if __name__ == "__main__":
