@@ -6,8 +6,8 @@
 Welcome new users.
 """
 
-from datetime import datetime
 import random
+from datetime import datetime
 
 from galene_bot import ArgumentParser, GaleneBot
 

@@ -81,6 +81,7 @@ class GaleneBot:
                 "source": self.client_id,
                 "username": self.username,
                 "dest": dest,
+                "noecho": True,
                 "value": value,
             }
         )
@@ -201,11 +202,11 @@ class GaleneBot:
     ):
         """On new chat event.
 
-        :param source: identifier of the sender
-        :type source: str
         :param kind: kind of message, None if text message
         :type kind: str
-        :param username: username of the new user
+        :param source: identifier of the sender
+        :type source: str
+        :param username: username of the sender
         :type username: str
         :param value: text message
         :type value: str

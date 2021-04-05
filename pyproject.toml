@@ -28,8 +28,8 @@ deps =
     interrogate
     check-manifest
 commands =
-    black --check --diff galene_bot setup.py
-    isort --check-only --diff --profile black galene_bot
+    black --check --diff galene_bot examples setup.py
+    isort --check-only --diff --profile black galene_bot examples
     interrogate
     check-manifest
 """
